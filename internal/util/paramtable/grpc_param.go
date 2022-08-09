@@ -86,8 +86,9 @@ func (p *grpcConfig) LoadFromEnv() {
 	val, present := os.LookupEnv("NOMAD_HOST_IP_milvus")
 	if !present {
 		p.IP = ipv4.LocalIP()
+	} else {
+		p.IP = val
 	}
-	p.IP = val
 }
 
 // LoadFromArgs is used to initialize configuration items from args.
