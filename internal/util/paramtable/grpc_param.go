@@ -14,6 +14,7 @@ package paramtable
 import (
 	"fmt"
 	"math"
+	"os"
 	"strconv"
 	"sync"
 	"time"
@@ -54,7 +55,7 @@ const (
 	ProxyExternalPort = 19530
 )
 
-///////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 // --- grpc ---
 type grpcConfig struct {
 	ServiceParam
@@ -82,7 +83,11 @@ func (p *grpcConfig) init(domain string) {
 
 // LoadFromEnv is used to initialize configuration items from env.
 func (p *grpcConfig) LoadFromEnv() {
-	p.IP = ipv4.LocalIP()
+	val, present := os.LookupEnv("NOMAD_HOST_IP_milvus")
+	if !present {
+		p.IP = ipv4.LocalIP()
+	}
+	p.IP = val
 }
 
 // LoadFromArgs is used to initialize configuration items from args.

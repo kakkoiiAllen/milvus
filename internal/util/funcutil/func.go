@@ -26,6 +26,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -56,7 +57,11 @@ func CheckGrpcReady(ctx context.Context, targetCh chan error) {
 
 // GetLocalIP return the local ip address
 func GetLocalIP() string {
-	return ipv4.LocalIP()
+	val, present := os.LookupEnv("NOMAD_HOST_IP_milvus")
+	if !present {
+		return ipv4.LocalIP()
+	}
+	return val
 }
 
 // WaitForComponentStates wait for component's state to be one of the specific states
