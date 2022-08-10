@@ -13,6 +13,7 @@ package paramtable
 
 import (
 	"math"
+	"os"
 	"strconv"
 	"sync"
 
@@ -35,7 +36,7 @@ const (
 	DefaultClientMaxRecvSize = 100 * 1024 * 1024
 )
 
-///////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 // --- grpc ---
 type grpcConfig struct {
 	ServiceParam
@@ -57,7 +58,12 @@ func (p *grpcConfig) init(domain string) {
 
 // LoadFromEnv is used to initialize configuration items from env.
 func (p *grpcConfig) LoadFromEnv() {
-	p.IP = ipv4.LocalIP()
+	val, present := os.LookupEnv("NOMAD_HOST_IP_http")
+	if !present {
+		p.IP = ipv4.LocalIP()
+	} else {
+		p.IP = val
+	}
 }
 
 // LoadFromArgs is used to initialize configuration items from args.
