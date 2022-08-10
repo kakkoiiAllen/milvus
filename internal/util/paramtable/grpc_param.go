@@ -83,7 +83,7 @@ func (p *grpcConfig) init(domain string) {
 
 // LoadFromEnv is used to initialize configuration items from env.
 func (p *grpcConfig) LoadFromEnv() {
-	val, present := os.LookupEnv("NOMAD_HOST_IP_milvus")
+	val, present := os.LookupEnv("NOMAD_HOST_IP_http")
 	if !present {
 		p.IP = ipv4.LocalIP()
 	} else {
